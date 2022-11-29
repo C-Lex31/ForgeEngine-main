@@ -1,0 +1,28 @@
+#type vertex
+#version 330 core
+layout (location = 0) in vec3 a_Position;
+layout (location =1) in vec2 a_TexCoord;
+
+out vec2 v_TexCoord;
+
+uniform mat4 u_ViewProjectionMatrix;		
+uniform mat4 u_Transform;
+
+void main()
+{
+    v_TexCoord = a_TexCoord;
+	gl_Position = u_ViewProjectionMatrix*u_Transform * vec4(a_Position, 1.0);
+}
+
+
+#type pixel
+#version 330 core
+layout(location=0) out vec4 Color;
+in vec2 v_TexCoord ;
+uniform sampler2D u_Texture;
+uniform sampler2D u_Texture2;
+uniform vec4 u_Color;
+void main()
+{
+	Color =mix(texture(u_Texture, v_TexCoord*10),texture(u_Texture2, v_TexCoord),0.2) * u_Color;
+}

@@ -1,0 +1,44 @@
+#type vertex
+#version 330 core
+layout (location = 0) in vec3 aPos;
+layout (location =1) in vec2 a_TexCoord;
+layout (location =2) in vec3 a_Normal;
+uniform mat4 u_ViewProjectionMatrix;		
+uniform mat4 u_Transform;
+uniform mat4 model;
+
+out vec2 v_TexCoord;
+out vec3 v_Normal;
+out vec3 v_crntPos;
+void main()
+{
+	v_crntPos = vec3(model * vec4(aPos , 1.0f));
+	v_TexCoord= a_TexCoord;
+	v_Normal=a_Normal;
+	gl_Position = u_ViewProjectionMatrix *u_Transform*vec4(v_crntPos, 1.0);
+}
+
+#type pixel
+#version 330 core
+layout(location=0) out vec4 Color;
+in vec2 v_TexCoord;
+uniform sampler2D u_Texture;
+in vec3 v_Normal;
+in vec3 v_crntPos;
+uniform vec4 u_Color;
+uniform vec3 u_LightPos;
+uniform vec3 u_CamPos;
+void main()
+{
+    float ambience =0.3f;
+	vec3 normal = normalize(v_Normal);
+	vec3 LightDir =normalize(u_LightPos - v_crntPos);
+
+	float SpecularLight = 0.8f;
+	vec3 ViewDir = normalize(u_CamPos - v_crntPos);
+	vec3 ReflectionDir =  reflect(-LightDir , normal);
+	float s_amt = pow(max(dot(ViewDir,ReflectionDir),0.0f) , 12.0f);
+	float specularity = s_amt * SpecularLight;
+	float diffusion = max(dot(normal , LightDir) , 0.0f);
+	Color = texture(u_Texture , v_TexCoord) * u_Color * (diffusion + ambience + specularity);
+}
