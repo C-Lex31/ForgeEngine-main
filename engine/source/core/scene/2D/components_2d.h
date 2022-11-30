@@ -1,6 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
-
+#include "core/servers/camera/CameraCore.h"
+#include "scene2d_camera.h"
 namespace Forge {
 
 	struct TagComponent
@@ -28,7 +29,18 @@ namespace Forge {
 		SpriteRendererComponent() = default;
 		SpriteRendererComponent(const glm::vec4& color)
 			:m_Color(color) {}
-		operator const glm::vec4() const { return m_Color; }
+		//operator const glm::vec4() const { return m_Color; }
+	};
+
+	struct CameraComponent
+	{
+		Forge::SceneCamera m_Camera;
+
+		bool isPrimary = true;
+		bool FixedAspectRatio = false;
+		CameraComponent() = default;
+	//	CameraComponent(const glm::mat4& projection)
+	//		:m_Camera(projection) {};
 	};
 
 }

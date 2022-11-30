@@ -1,5 +1,6 @@
 #pragma once
 #include "core/servers/camera/2D/orthographic_camera.h"
+#include "core/servers/camera/CameraCore.h"
 #include "core/servers/rendering/core_rd/render_commands.h"
 #include "core/servers/rendering/core_rd/texture.h"
 namespace Forge {
@@ -11,6 +12,7 @@ namespace Forge {
 		static void Shutdown();
 
 		static void BeginScene(const orthographic_camera& cam2d);
+		static void BeginScene(const CameraCore& cam ,const glm::mat4& transform);
 		static void EndScene();
 		static void Clear();
 

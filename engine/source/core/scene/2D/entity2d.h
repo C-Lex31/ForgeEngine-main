@@ -35,8 +35,13 @@ namespace Forge {
 			m_Scene->m_Registry.remove<T>(m_EntityHandle);
 		}
 
+		bool IsValid()
+		{
+			return m_EntityHandle != entt::null;
+		}
+
 	private:
-		entt::entity m_EntityHandle;
+		entt::entity m_EntityHandle = entt::null;
 		Scene2d* m_Scene;
 	};
 

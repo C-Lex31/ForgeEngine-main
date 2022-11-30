@@ -22,7 +22,7 @@ namespace Forge {
 		FRef<shader> m_Shader;
 		FRef<Texture2D>m_CheckerboardTexture, m_Logo;
 		FRef<Framebuffer>m_Framebuffer;
-		glm::vec2 m_ViewportSize ={5.0f,5.0f};
+		glm::vec2 m_ViewportSize ={0.0f,0.0f};
 		glm::vec4 QuadColor1 = { 0.2f, 0.3f, 0.8f, 1.0f };
 		glm::vec4 QuadColor2 = { 0.7f, 0.2f, 0.3f, 1.0f };
 
@@ -31,6 +31,7 @@ namespace Forge {
 		bool OnViewportDock = false;
 
 		Entity QuadEntity;
+		Entity CameraEntity;
 
 	};
 }

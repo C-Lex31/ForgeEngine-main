@@ -107,12 +107,19 @@ namespace Forge {
 	void Renderer2D::BeginScene( const orthographic_camera& cam2d)
 	{
 		//rdc.TextureShader->bind();
-	rdc.QuadShader->UploadUniformMat4("u_ViewProjectionMatrix", cam2d.GetViewProjectionMatrix());
+	    rdc.QuadShader->UploadUniformMat4("u_ViewProjectionMatrix", cam2d.GetViewProjectionMatrix());
 		//rdc.TextureShader->UploadUniformMat4("u_Transform", glm::mat4(1.0f));
 	
 		StartBatch();
 //	rdc.TextureShader->UploadUniformInt("u_Texture2", 1);
 	
+	}
+
+	void Renderer2D::BeginScene(const CameraCore& cam, const glm::mat4& transform)
+	{
+		glm::mat4 ViewProjection = cam.GetProjection() * glm::inverse(transform);
+		rdc.QuadShader->UploadUniformMat4("u_ViewProjectionMatrix", ViewProjection);
+		StartBatch();
 	}
 
 	void Renderer2D::EndScene()

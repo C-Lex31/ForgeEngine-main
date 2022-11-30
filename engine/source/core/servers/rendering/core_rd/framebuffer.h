@@ -11,7 +11,7 @@ namespace Forge {
 	class Framebuffer
 	{
 	public:
-		virtual const FramebufferSpecs& GetFSpecs() const = 0;
+		virtual const FramebufferSpecs& GetFramebufferSpecs() const = 0;
 		virtual const uint32_t GetColorAttachmentID() const = 0;
 		virtual void resize(uint32_t vp_width,uint32_t vp_height) = 0;
 		virtual void bind()  = 0;

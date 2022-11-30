@@ -9,7 +9,7 @@ namespace Forge {
 		OpenGLFramebuffer(const FramebufferSpecs& spec);
 		virtual ~OpenGLFramebuffer();
 		void Invalidate();
-		virtual const FramebufferSpecs& GetFSpecs() const override { return m_Specification; }
+		virtual const FramebufferSpecs& GetFramebufferSpecs() const override { return m_Specification; }
 		virtual const uint32_t GetColorAttachmentID() const override { return m_ColorAttachment; }
 		virtual void resize(uint32_t vp_width, uint32_t vp_height)  override;
 		virtual void bind()  override;

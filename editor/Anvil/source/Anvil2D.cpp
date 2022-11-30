@@ -19,12 +19,15 @@ namespace Forge {
         m_Framebuffer = Framebuffer::create(FSpec);
         m_ActiveScene = FCreateRef<Scene2d>();
 
-      auto Quad=  m_ActiveScene->CreateEntity();
+      auto Quad=  m_ActiveScene->CreateEntity("Square");
 
 
-      Quad.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,1.0f,0.0f,1.0f });
-    //  m_ActiveScene->reg().emplace<SpriteRendererComponent>(QuadEntity,glm::vec4{0.0f,1.0f,0.0f,1.0f});
-	}
+      Quad.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,1.0f,0.0f,1.0f });  
+      QuadEntity = Quad;
+      CameraEntity = m_ActiveScene->CreateEntity();
+      CameraEntity.AddComponent<CameraComponent>();
+
+    }
 
 	void Anvil::OnDetach()
 	{
@@ -32,6 +35,15 @@ namespace Forge {
 
 	void Anvil::OnUpdate(Timestep ts)
 	{
+        m_ActiveScene->OnViewportResize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+
+        if (FramebufferSpecs spec = m_Framebuffer->GetFramebufferSpecs();
+            m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // zero sized framebuffer is invalid
+            (spec.width != m_ViewportSize.x || spec.height != m_ViewportSize.y))
+        {
+            m_Framebuffer->resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+            m_CameraController.ResizeBounds(m_ViewportSize.x, m_ViewportSize.y);
+        }
         //--------------------------------------------------2D Camera------------------------------------------------------------------------------------------------------
       // m_Cam2d.OrthographicCameraInput(ts.GetSec());
     //    FR_TRACE((!OnViewportDock && OnViewportFocus) || (OnViewportDock && OnViewportFocus));
@@ -47,7 +59,8 @@ namespace Forge {
 
       
 
-        Renderer2D::BeginScene(m_CameraController.GetCamera());
+     //   Renderer2D::BeginScene(m_CameraController.GetCamera());
+       
      //   Renderer2D::DrawQuad({ 0.0f,2.0f }, { 1.7f,0.5f }, QuadColor1);
       //  Renderer2D::DrawQuad({ -1.0f,0.0f }, { 0.8f,0.5f }, QuadColor2);
       //  Renderer2D::DrawTRSQuad({ -1.0f,0.0f }, { 1.0f,1.0f },20, QuadColor2);
@@ -55,7 +68,7 @@ namespace Forge {
         m_ActiveScene->Scene2DUpdate(ts);
        // Renderer2D::DrawQuad({ 0.0f,0.0f }, { 5.0f,5.0f }, m_CheckerboardTexture, m_Logo);
 
-        Renderer2D::EndScene();
+    //    Renderer2D::EndScene();
         m_Framebuffer->unbind();
 
 	}
@@ -130,9 +143,11 @@ namespace Forge {
         ImGui::Begin("Settings");
         
       //  m_ActiveScene->reg().get<SpriteRendererComponent>(QuadEntity)
-        ImGui::ColorEdit4("Quad Color 1", glm::value_ptr(QuadColor1));
-        ImGui::ColorEdit4("Quad Color 2", glm::value_ptr(QuadColor2));
-        
+        if (QuadEntity.IsValid()) {
+            auto& QuadColor = QuadEntity.GetComponent<SpriteRendererComponent>().m_Color;
+            ImGui::ColorEdit4("Quad Color 1", glm::value_ptr(QuadColor));
+            //  ImGui::ColorEdit4("Quad Color 2", glm::value_ptr(QuadColor2));
+        }
         ImGui::End();
        
         ImGui::Begin("Scene View");
