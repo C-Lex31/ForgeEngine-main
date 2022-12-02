@@ -3,6 +3,7 @@
 #include "entity2d.h"
 #include "components_2d.h"
 #include "core/servers/rendering/renderer/Renderer2D.h"
+#include "scriptables.h"
 namespace Forge {
 	Scene2d::Scene2d()
 	{
@@ -23,6 +24,22 @@ namespace Forge {
 
 	void Scene2d::Scene2DUpdate(Timestep ts)
 	{
+		 {
+		
+			m_Registry.view<NativeScriptComponent>().each([=](auto entity, auto& nsc)
+				{
+					// TODO: Move to Scene::OnScenePlay
+					if (!nsc.Instance)
+					{
+						nsc.Instance = nsc.InstantiateScript();
+						nsc.Instance->m_Entity = Entity{ entity, this };
+						nsc.Instance->OnCreate();
+					}
+
+					nsc.Instance->OnUpdate(ts);
+				});
+		}
+
 		CameraCore* mainCamera = nullptr;
 		glm::mat4* cameraTransform = nullptr;
 		{
@@ -37,7 +54,7 @@ namespace Forge {
 					cameraTransform = &transform.m_Transform;
 					break;
 				}
-
+				
 			}
 		}
 		if (mainCamera){

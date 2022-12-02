@@ -2,6 +2,7 @@
 #include "glm/glm.hpp"
 #include "core/servers/camera/CameraCore.h"
 #include "scene2d_camera.h"
+#include "scriptables.h"
 namespace Forge {
 
 	struct TagComponent
@@ -42,5 +43,22 @@ namespace Forge {
 	//	CameraComponent(const glm::mat4& projection)
 	//		:m_Camera(projection) {};
 	};
+
+	class ScriptableEntity;
+	struct NativeScriptComponent
+	{
+		ScriptableEntity* Instance = nullptr;
+
+		ScriptableEntity* (*InstantiateScript)();
+		void (*DestroyScript)(NativeScriptComponent*);
+
+		template<typename T>
+		void Bind()
+		{
+			InstantiateScript = []() { return static_cast<ScriptableEntity*>(new T()); };
+			DestroyScript = [](NativeScriptComponent* nsc) { delete nsc->Instance; nsc->Instance = nullptr; };
+		}
+	};
+
 
 }

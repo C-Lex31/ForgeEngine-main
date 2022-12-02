@@ -40,6 +40,10 @@ namespace Forge {
 			return m_EntityHandle != entt::null;
 		}
 
+		operator uint32_t() const {
+			return (uint32_t)m_EntityHandle;
+		}
+
 	private:
 		entt::entity m_EntityHandle = entt::null;
 		Scene2d* m_Scene;

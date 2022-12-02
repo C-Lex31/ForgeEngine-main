@@ -34,7 +34,7 @@
 #include "core/scene/2D/scene_2d.h"
 #include "core/scene/2D/entity2d.h"
 #include "core/scene/2D/components_2d.h"
-
+#include "core/scene/2D/scriptables.h"
 
 
 #include "imgui.h"
