@@ -1,6 +1,6 @@
 #pragma once
 #include "ForgeEngine.h"
-
+#include"editor/scene_hierarchy_panel.h"
 namespace Forge {
 	class Anvil :public Layer
 	{
@@ -32,6 +32,9 @@ namespace Forge {
 
 		Entity QuadEntity;
 		Entity CameraEntity;
+		Entity ClipSpaceCamera;
+
+		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 	};
 }

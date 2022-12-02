@@ -24,9 +24,40 @@ namespace Forge {
 
       Quad.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,1.0f,0.0f,1.0f });  
       QuadEntity = Quad;
-      CameraEntity = m_ActiveScene->CreateEntity();
+      CameraEntity = m_ActiveScene->CreateEntity("Main Camera");
       CameraEntity.AddComponent<CameraComponent>();
 
+      ClipSpaceCamera = m_ActiveScene->CreateEntity();
+      auto& Cam2 = ClipSpaceCamera.AddComponent<CameraComponent>();
+      Cam2.isPrimary = false;
+
+    //  CameraEntity.AddComponent<NativeScriptComponent>();
+      //ClipSpaceCamera.AddComponent<NativeScriptComponent>();
+
+      class CameraController :public ScriptableEntity
+      {
+      public:
+          void OnCreate()
+          {
+
+          }
+          void OnDestroy()
+          {
+            
+          }
+          void OnUpdate(Timestep ts)
+          {
+              FR_TRACE("Timestep :{0}", ts.GetSec());
+              auto& transform = GetComponent<TransformComponent>().m_Transform;
+              float speed = 5.0f;
+              if (input::isKeyPressed(KeyCode::A))
+                  transform[3][0] -= speed *ts.GetSec();
+          }
+
+      };
+
+      CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+      m_SceneHierarchyPanel.SetContext(m_ActiveScene);
     }
 
 	void Anvil::OnDetach()
@@ -140,6 +171,8 @@ namespace Forge {
 
             ImGui::EndMenuBar();
         }
+
+        m_SceneHierarchyPanel.OnGuiRender();
         ImGui::Begin("Settings");
         
       //  m_ActiveScene->reg().get<SpriteRendererComponent>(QuadEntity)
