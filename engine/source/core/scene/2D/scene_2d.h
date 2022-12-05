@@ -14,6 +14,7 @@ namespace Forge {
 		~Scene2d();
 
 		Entity CreateEntity(const FString& TagName = "");
+		void DestroyEntity(Entity en);
 		//entt::registry& reg() { return m_Registry; } //TEMP
 		void Scene2DUpdate(Timestep ts);
 		void OnViewportResize(uint32_t width, uint32_t height);

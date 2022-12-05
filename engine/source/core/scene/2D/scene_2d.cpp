@@ -22,6 +22,11 @@ namespace Forge {
 		return entity;
 	}
 
+	void Scene2d::DestroyEntity(Entity en)
+	{
+		m_Registry.destroy(en);
+	}
+
 	void Scene2d::Scene2DUpdate(Timestep ts)
 	{
 		 {
@@ -41,7 +46,7 @@ namespace Forge {
 		}
 
 		CameraCore* mainCamera = nullptr;
-		glm::mat4* cameraTransform = nullptr;
+		glm::mat4 cameraTransform ;
 		{
 
 			auto view= m_Registry.view<TransformComponent, CameraComponent>();
@@ -51,7 +56,7 @@ namespace Forge {
 				if (camera.isPrimary)
 				{
 					mainCamera = &camera.m_Camera;
-					cameraTransform = &transform.m_Transform;
+					cameraTransform = transform.GetTransform();
 					break;
 				}
 				
@@ -59,14 +64,14 @@ namespace Forge {
 		}
 		if (mainCamera){
 
-			Renderer2D::BeginScene(mainCamera->GetProjection(), *cameraTransform);
+			Renderer2D::BeginScene(mainCamera->GetProjection(), cameraTransform);
 
 			auto group = m_Registry.group<TransformComponent>(entt::get<SpriteRendererComponent>);
 
 			for (auto entity : group)
 			{
 				auto& [_transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				Renderer2D::DrawQuad(_transform.m_Transform,  sprite.m_Color);
+				Renderer2D::DrawQuad(_transform.GetTransform(), sprite.m_Color);
 			}
 
 			Renderer2D::EndScene();

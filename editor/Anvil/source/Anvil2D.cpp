@@ -173,15 +173,15 @@ namespace Forge {
         }
 
         m_SceneHierarchyPanel.OnGuiRender();
-        ImGui::Begin("Settings");
+      //  ImGui::Begin("Settings");
         
       //  m_ActiveScene->reg().get<SpriteRendererComponent>(QuadEntity)
-        if (QuadEntity.IsValid()) {
-            auto& QuadColor = QuadEntity.GetComponent<SpriteRendererComponent>().m_Color;
-            ImGui::ColorEdit4("Quad Color 1", glm::value_ptr(QuadColor));
+      //  if (QuadEntity.IsValid()) {
+       //     auto& QuadColor = QuadEntity.GetComponent<SpriteRendererComponent>().m_Color;
+       //     ImGui::ColorEdit4("Quad Color 1", glm::value_ptr(QuadColor));
             //  ImGui::ColorEdit4("Quad Color 2", glm::value_ptr(QuadColor2));
-        }
-        ImGui::End();
+       // }
+   //     ImGui::End();
        
         ImGui::Begin("Scene View");
         ImGuiBackendFlags backend_flags = io.BackendFlags;

@@ -23,11 +23,11 @@ namespace Forge {
 
 		glm::mat4 m_Transform{1.0f};
 		TransformComponent() = default;
-		TransformComponent(const glm::mat4& transform)
-			:m_Transform(transform) {}
+		TransformComponent(const glm::vec3& translation)
+			:Translation(translation) {}
 
-		operator  glm::mat4()  { return m_Transform; }
-		operator const glm::mat4() const { return m_Transform; }
+	//	operator  glm::mat4()  { return m_Transform; }
+		//operator const glm::mat4() const { return m_Transform; }
 
 		glm::mat4 GetTransform() const
 		{
