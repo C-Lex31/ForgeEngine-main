@@ -3,6 +3,7 @@
 #include"imgui.h"
 #include"imgui_internal.h"
 #include "core/scene/2D/components_2d.h"
+#include <glm/gtc/type_ptr.hpp>
 namespace Forge {
 	SceneHierarchyPanel::SceneHierarchyPanel(const FRef<Scene2d>& scene)
 	{
@@ -19,11 +20,24 @@ namespace Forge {
 		m_Context->m_Registry.each([&](auto entityID)
 		{
 				Entity entity(entityID, m_Context.get());
-			auto& tc=entity.GetComponent<TagComponent>();
-			ImGui::Text("%s", tc.m_Tag.c_str());
+				
+			//auto& tc=entity.GetComponent<TagComponent>();
+			//ImGui::Text("%s", tc.m_Tag.c_str());
 			DrawEntityNode(entity);
 		});
+		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+			m_SelectionContext={};
 		ImGui::End();
+
+		ImGui::Begin("Details");
+		if (m_SelectionContext.IsValid())
+		{
+		 DrawComponents(m_SelectionContext);
+			
+		}
+		ImGui::End();
+
+
 
 	}
 	void SceneHierarchyPanel::DrawEntityNode(Entity entity)
@@ -44,6 +58,29 @@ namespace Forge {
 				ImGui::TreePop();
 			ImGui::TreePop();
 		} 
+
+	}
+	void SceneHierarchyPanel::DrawComponents(Entity entity)
+	{
+		if (entity.HasComponent<TagComponent>())
+		{
+			auto& tag = entity.GetComponent<TagComponent>().m_Tag;
+
+			char buffer[256]; //Max Tag name length
+			memset(buffer, 0, sizeof(buffer)); //init buffer to 0
+			strcpy_s(buffer, sizeof(buffer), tag.c_str()); //Copying the tag into buffer
+			if (ImGui::InputText("Tag", buffer, sizeof(buffer)))
+			{
+				tag = FString(buffer);
+			}
+		
+		}
+
+		if (entity.HasComponent<TransformComponent>())
+		{
+			auto& transform = entity.GetComponent < TransformComponent>().m_Transform;
+			ImGui::DragFloat3("Location", glm::value_ptr(transform[3]), 0.2f);
+		}
 
 	}
 }

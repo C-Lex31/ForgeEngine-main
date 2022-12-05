@@ -19,16 +19,16 @@ namespace Forge {
         m_Framebuffer = Framebuffer::create(FSpec);
         m_ActiveScene = FCreateRef<Scene2d>();
 
-      auto Quad=  m_ActiveScene->CreateEntity("Square");
+      QuadEntity=  m_ActiveScene->CreateEntity("Quad");
 
 
-      Quad.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,1.0f,0.0f,1.0f });  
-      QuadEntity = Quad;
+      QuadEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,1.0f,0.0f,1.0f });  
+    
       CameraEntity = m_ActiveScene->CreateEntity("Main Camera");
       CameraEntity.AddComponent<CameraComponent>();
 
-      ClipSpaceCamera = m_ActiveScene->CreateEntity();
-      auto& Cam2 = ClipSpaceCamera.AddComponent<CameraComponent>();
+      CameraB = m_ActiveScene->CreateEntity("CameraB");
+      auto& Cam2 = CameraB.AddComponent<CameraComponent>();
       Cam2.isPrimary = false;
 
     //  CameraEntity.AddComponent<NativeScriptComponent>();

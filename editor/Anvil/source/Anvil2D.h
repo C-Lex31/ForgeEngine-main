@@ -32,7 +32,7 @@ namespace Forge {
 
 		Entity QuadEntity;
 		Entity CameraEntity;
-		Entity ClipSpaceCamera;
+		Entity CameraB;
 
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 

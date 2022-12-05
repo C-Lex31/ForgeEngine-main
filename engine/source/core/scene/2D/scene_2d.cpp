@@ -66,7 +66,7 @@ namespace Forge {
 			for (auto entity : group)
 			{
 				auto& [_transform, sprite] = group.get<TransformComponent, SpriteRendererComponent>(entity);
-				Renderer2D::DrawQuad({ 0.0f,2.0f }, { 1.7f,0.5f }, sprite.m_Color);
+				Renderer2D::DrawQuad(_transform.m_Transform,  sprite.m_Color);
 			}
 
 			Renderer2D::EndScene();

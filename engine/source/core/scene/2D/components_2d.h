@@ -1,5 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
 #include "core/servers/camera/CameraCore.h"
 #include "scene2d_camera.h"
 #include "scriptables.h"
@@ -9,11 +11,16 @@ namespace Forge {
 	{
 		FString m_Tag;
 		TagComponent() = default;
+		TagComponent(const TagComponent&) = default;
 		TagComponent(const FString& TagName)
 			:m_Tag(TagName) {}
 	};
 	struct TransformComponent
 	{
+		glm::vec3 Translation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
+
 		glm::mat4 m_Transform{1.0f};
 		TransformComponent() = default;
 		TransformComponent(const glm::mat4& transform)
@@ -21,6 +28,15 @@ namespace Forge {
 
 		operator  glm::mat4()  { return m_Transform; }
 		operator const glm::mat4() const { return m_Transform; }
+
+		glm::mat4 GetTransform() const
+		{
+			glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
+
+			return glm::translate(glm::mat4(1.0f), Translation)
+				* rotation
+				* glm::scale(glm::mat4(1.0f), Scale);
+		}
 
 	};
 
