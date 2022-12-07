@@ -3,7 +3,7 @@
 #include "platform/windows/winInput.h"
 #include "Anvil2D.h"
 #include "Anvil3D.h"
-//#include "Forge3D.h"
+
 //#include "GLFW/glfw3.h"
 #include "core/client/entry_point.h"
 namespace Forge {
@@ -12,7 +12,7 @@ namespace Forge {
 	{
 	public:
 		ForgeEditor()
-			:Application("Forge Editor")
+			:Application("Anvil Editor")
 		{
 			//PushLayer(new Engine_Layer());
 			PushLayer(new Anvil());

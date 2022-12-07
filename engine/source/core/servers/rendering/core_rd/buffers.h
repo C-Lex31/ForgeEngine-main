@@ -32,7 +32,7 @@ namespace Forge {
 		std::string m_name;
 		ShaderDataType m_type;
 		uint32_t m_size;
-		uint32_t m_offset;
+		size_t m_offset;
 		bool isNormalized;
 
 		buffer_elements(const std::string& name,ShaderDataType type, bool normalized = false)

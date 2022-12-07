@@ -19,6 +19,8 @@ namespace Forge {
 		case Forge::ShaderDataType::FRint4 :   return GL_INT;
 		case Forge::ShaderDataType::FRbool:    return GL_BOOL;
 		}
+		FR_CORE_ASSERT(false, "Unknown ShaderDataType!");
+		return 0;
 	}
 
 	OpenGLVertexArray::OpenGLVertexArray()

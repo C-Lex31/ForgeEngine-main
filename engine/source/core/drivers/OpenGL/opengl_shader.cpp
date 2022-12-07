@@ -14,6 +14,8 @@ namespace Forge {
 
 		else FR_CORE_FATAL("Unknown Shader Type ");
 		
+		FR_CORE_ASSERT(false, "Unknown Shader Type!");
+		return 0;
 	}
 
 	OpenGLShader::OpenGLShader(const FString& filepath)

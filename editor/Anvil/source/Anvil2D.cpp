@@ -47,11 +47,10 @@ namespace Forge {
           }
           void OnUpdate(Timestep ts)
           {
-              FR_TRACE("Timestep :{0}", ts.GetSec());
-              auto& transform = GetComponent<TransformComponent>().m_Transform;
+             /* auto& transform = GetComponent<TransformComponent>().m_Transform;
               float speed = 5.0f;
               if (input::isKeyPressed(KeyCode::A))
-                  transform[3][0] -= speed *ts.GetSec();
+                  transform[3][0] -= speed *ts.GetSec();*/
           }
 
       };
@@ -151,12 +150,15 @@ namespace Forge {
 
         // Submit the DockSpace
         ImGuiIO& io = ImGui::GetIO();
+        ImGuiStyle& style = ImGui::GetStyle();
+        float MinWindowSize = style.WindowMinSize.x;
+        MinWindowSize = 375;
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
         {
             ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
             ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
         }
-
+        style.WindowMinSize.x = MinWindowSize;
 
         if (ImGui::BeginMenuBar())
         {
@@ -226,10 +228,9 @@ namespace Forge {
             m_CameraController.ResizeBounds(ViewportPanelSize.x, ViewportPanelSize.y);
         }
        // FR_TRACE("Viewport :{0},{1}", ViewportPanelSize.x, ViewportPanelSize.y);
-        uint32_t TexID = m_Framebuffer->GetColorAttachmentID();
-        ImGui::Image((void*)TexID, ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
+        uint64_t TexID = m_Framebuffer->GetColorAttachmentID();
+        ImGui::Image(reinterpret_cast<void*>(TexID), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();  ///End Scene View
-
         static bool show = true;
         ImGui::ShowDemoWindow(&show);
 

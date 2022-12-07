@@ -168,8 +168,8 @@ namespace Forge {
             m_CamController.ResizeBounds(ViewportPanelSize.x, ViewportPanelSize.y);
         }
        // FR_TRACE("Viewport :{0},{1}", ViewportPanelSize.x, ViewportPanelSize.y);
-        uint32_t TexID = m_Framebuffer->GetColorAttachmentID();
-        ImGui::Image((void*)TexID, ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
+        uint64_t TexID = m_Framebuffer->GetColorAttachmentID();
+        ImGui::Image(reinterpret_cast<void*>(TexID), ImVec2(m_ViewportSize.x, m_ViewportSize.y), ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();  ///End Scene View
 
         ImGui::End(); //Close Docker

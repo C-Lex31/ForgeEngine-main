@@ -36,7 +36,7 @@ namespace Forge {
 	}
 	float OpenGLRendererAPI::GetTime()
 	{
-		return glfwGetTime();
+		return (float)glfwGetTime();
 	}
 
 

@@ -17,8 +17,8 @@ namespace Forge {
 		uint32_t Height;
 
 		WindowProps(const FString& title = "Forge Engine",
-			uint32_t width = 1366,
-			uint32_t height = 705)
+			uint32_t width = 1920,
+			uint32_t height = 1080)
 			: Title(title), Width(width), Height(height)
 		{
 		}

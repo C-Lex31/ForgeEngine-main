@@ -124,8 +124,8 @@ namespace Forge {
 
 	void Renderer2D::EndScene()
 	{
-		uint32_t dataSize = (uint8_t*)rdc.QuadVertexBufferPtr - (uint8_t*)rdc.QuadVertexBufferBase;
-		rdc.QuadVB->SetData(rdc.QuadVertexBufferBase, dataSize);
+	//	uint32_t dataSize = (uint8_t*)rdc.QuadVertexBufferPtr - (uint8_t*)rdc.QuadVertexBufferBase;
+	//	rdc.QuadVB->SetData(rdc.QuadVertexBufferBase, dataSize);
 
 		Clear();
 	}

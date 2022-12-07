@@ -21,6 +21,7 @@ namespace Forge {
 		virtual void OnEvent(Event& e) override;
 
 		void InitiateEventLock(bool LockStatus) { m_EventLock = LockStatus; }
+		void SetDarkThemeColors();
 		void Begin();
 		void End();
 	private:
