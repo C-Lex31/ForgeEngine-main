@@ -1,4 +1,6 @@
 #include "Anvil2D.h"
+#include "core/scene/2D/scene_serializer.h"
+#include "core/Utilities/platform_utility.h"
 
 namespace Forge {
 
@@ -18,22 +20,31 @@ namespace Forge {
         FSpec.height = 705;
         m_Framebuffer = Framebuffer::create(FSpec);
         m_ActiveScene = FCreateRef<Scene2d>();
+        m_EditorScene = FCreateRef<Scene2d>();
+        m_ActiveScene = m_EditorScene;
+       // NewScene();
+/*
+        auto commandLineArgs = Application::Get().GetSpecification().CommandLineArgs;
+        if (commandLineArgs.Count > 1)
+        {
+            const char* sceneFilePath = commandLineArgs[1];
+            OpenScene(sceneFilePath);
+        }
+*/
 
-      QuadEntity=  m_ActiveScene->CreateEntity("Quad");
-
-
-      QuadEntity.AddComponent<SpriteRendererComponent>(glm::vec4{ 0.0f,1.0f,0.0f,1.0f });  
+  /*    QuadEntity = m_ActiveScene->CreateEntity("Quad");
+      QuadEntity.AddComponent<SpriteRendererComponent>();  
     
       CameraEntity = m_ActiveScene->CreateEntity("Main Camera");
       CameraEntity.AddComponent<CameraComponent>();
 
       CameraB = m_ActiveScene->CreateEntity("CameraB");
       auto& Cam2 = CameraB.AddComponent<CameraComponent>();
-      Cam2.isPrimary = false;
-
+     Cam2.isPrimary = false;
+*/
     //  CameraEntity.AddComponent<NativeScriptComponent>();
       //ClipSpaceCamera.AddComponent<NativeScriptComponent>();
-
+#if NATIVE_SCRIPT
       class CameraController :public ScriptableEntity
       {
       public:
@@ -56,7 +67,9 @@ namespace Forge {
       };
 
       CameraEntity.AddComponent<NativeScriptComponent>().Bind<CameraController>();
+#endif
       m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+     
     }
 
 	void Anvil::OnDetach()
@@ -162,8 +175,19 @@ namespace Forge {
 
         if (ImGui::BeginMenuBar())
         {
+  
+
             if (ImGui::BeginMenu("Options"))
             {
+                if (ImGui::MenuItem("New", "Ctrl+N"))
+                    NewScene();
+                if (ImGui::MenuItem("Open...", "Ctrl+O"))       
+                    OpenScene();               
+                if (ImGui::MenuItem("Save", "Ctrl+S"))
+                    SaveScene();
+                if (ImGui::MenuItem("Save As...", "Ctrl+Shift+S"))
+                    SaveSceneAs();
+
                 if (ImGui::MenuItem("Quit")) { Application::Get().Close(); }
 
 
@@ -244,5 +268,67 @@ namespace Forge {
       //  if ((!OnViewportDock && OnViewportFocus) || (OnViewportDock && OnViewportFocus))
         // event.m_handled |= event.IsInCategory(EventCategoryMouse) & io.WantCaptureMouse;
 	}
+    void Anvil::NewScene()
+    {
+        m_ActiveScene = FCreateRef<Scene2d>();
+        m_SceneHierarchyPanel.SetContext(m_ActiveScene);
+
+        m_EditorScenePath = std::filesystem::path();
+    }
+
+    void Anvil::OpenScene()
+    {
+        std::string filepath = FileSystem::OpenFile("Forge Scene (*.forge)\0*.forge\0");
+        if (!filepath.empty())
+            OpenScene(filepath);
+    }
+
+    void Anvil::OpenScene(const std::filesystem::path& path)
+    {
+       // if (m_SceneState != SceneState::Edit)
+       //     OnSceneStop();
+
+        if (path.extension().string() != ".forge")
+        {
+            FR_WARN("Could not load {0} - Not a Forge scene file", path.filename().string());
+            return;
+        }
+
+        FRef<Scene2d> newScene = FCreateRef<Scene2d>();
+        SceneSerializer serializer(newScene);
+        if (serializer.Deserialize(path.string()))
+        {
+            m_EditorScene = newScene;
+            m_SceneHierarchyPanel.SetContext(m_EditorScene);
+
+            m_ActiveScene = m_EditorScene;
+            m_EditorScenePath = path;
+        }
+    }
+   
+    void Anvil::SaveScene()
+    {
+        if (!m_EditorScenePath.empty())
+            SerializeScene(m_ActiveScene, m_EditorScenePath);
+        else
+            SaveSceneAs();
+    }
+
+    void Anvil::SaveSceneAs()
+    {
+        std::string filepath = FileSystem::SaveFile("Forge Scene (*.forge)\0*.forge\0");
+        if (!filepath.empty())
+        {
+            SerializeScene(m_ActiveScene, filepath);
+            m_EditorScenePath = filepath;
+        }
+    }
+
+    void Anvil::SerializeScene(FRef<Scene2d> scene, const std::filesystem::path& path)
+    {
+        SceneSerializer serializer(scene);
+        serializer.Serialize(path.string());
+    }
+    
 
 }

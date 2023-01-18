@@ -12,7 +12,7 @@ namespace Forge {
 	Scene2d::~Scene2d()
 	{
 	}
-	Entity Scene2d::CreateEntity(const FString& TagName)
+	Entity Scene2d::CreateEntity(const FString& TagName )
 	{
 		Entity entity(m_Registry.create(), this);
 		entity.AddComponent<TransformComponent>();

@@ -16,10 +16,12 @@ IncludeDir["GLAD"] = "dependencies/Libraries/GLAD/include"
 IncludeDir["UI"]  =  "vendor/UI/central"
 IncludeDir["img_loader"]  =  "engine/helpers/img_loader"
 IncludeDir["ecs"]  =  "engine/helpers/ecs"
+IncludeDir["yaml_cpp"]  =  "vendor/thirdparty/yaml/include"
 
 include "dependencies/Libraries/GLFW"
 include "dependencies/Libraries/GLAD"
 include "vendor/UI/central"
+include "vendor/thirdparty/yaml"
 
 
 project "engine"
@@ -41,7 +43,7 @@ project "engine"
           "%{prj.name}/source/**.h",
           "%{prj.name}/source/**.cpp",
 		  "%{prj.name}/helpers/img_loader/**.h",
-		  "%{prj.name}/helpers/img_loader/**.cpp"
+		 "%{prj.name}/helpers/img_loader/**.cpp"
          }
 
 		 defines{
@@ -57,8 +59,9 @@ project "engine"
 			   "%{IncludeDir.GLAD}",
 			   "%{IncludeDir.UI}",
 			    "%{IncludeDir.img_loader}",
-				"%{IncludeDir.ecs}"
-			  
+				"%{IncludeDir.ecs}",
+				"%{IncludeDir.yaml_cpp}"
+				
 		 }
 
 		 links
@@ -66,7 +69,9 @@ project "engine"
 		      "GLFW",
 			  "GLAD",
 			  "ImGui",
-			  "opengl32.lib"
+			  "opengl32.lib",
+			  "yaml-cpp"
+
 		 }
 
 

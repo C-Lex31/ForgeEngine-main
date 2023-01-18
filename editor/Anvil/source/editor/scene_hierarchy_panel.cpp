@@ -12,28 +12,32 @@ namespace Forge {
 	void SceneHierarchyPanel::SetContext(const FRef<Scene2d>& scene)
 	{
 		m_Context = scene;
+		m_SelectionContext = {};
+		//scene->m_Registry.clear();
 	}
 	void SceneHierarchyPanel::OnGuiRender()
 	{
 		ImGui::Begin("Scene Hierarchy");
-		
-		m_Context->m_Registry.each([&](auto entityID)
+		if (m_Context)
 		{
-				Entity entity(entityID, m_Context.get());
-				
-			//auto& tc=entity.GetComponent<TagComponent>();
-			//ImGui::Text("%s", tc.m_Tag.c_str());
-			DrawEntityNode(entity);
-		});
-		if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-			m_SelectionContext={};
+			m_Context->m_Registry.each([&](auto entityID)
+				{
+					Entity entity(entityID, m_Context.get());
 
-		if (ImGui::BeginPopupContextWindow(0, 1, false))
-		{
-			if (ImGui::MenuItem("Create Game Object"))
-				m_Context->CreateEntity("Empty Entity");
+					//auto& tc=entity.GetComponent<TagComponent>();
+					//ImGui::Text("%s", tc.m_Tag.c_str());
+					DrawEntityNode(entity);
+				});
+			if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
+				m_SelectionContext = {};
 
-			ImGui::EndPopup();
+			if (ImGui::BeginPopupContextWindow(0, 1, false))
+			{
+				if (ImGui::MenuItem("Create Game Object"))
+					m_Context->CreateEntity("Empty Entity");
+
+				ImGui::EndPopup();
+			}
 		}
 		ImGui::End();
 

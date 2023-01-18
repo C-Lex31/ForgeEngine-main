@@ -12,6 +12,16 @@ namespace Forge {
 		void OnUpdate(Timestep ts) override;
 		virtual void OnGUIRender() override;
 		void OnEvent(Event& event)override;
+
+
+	private:
+		void NewScene();
+		void OpenScene();
+		void OpenScene(const std::filesystem::path& path);
+		void SaveScene();
+		void SaveSceneAs();
+
+		void SerializeScene(FRef<Scene2d> scene, const std::filesystem::path& path);
 	private:
 
 		OrthographicCameraController m_CameraController;
@@ -34,6 +44,8 @@ namespace Forge {
 		Entity CameraEntity;
 		Entity CameraB;
 
+		FRef<Scene2d> m_EditorScene;
+		std::filesystem::path m_EditorScenePath;
 		SceneHierarchyPanel m_SceneHierarchyPanel;
 
 	};

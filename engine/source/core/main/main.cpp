@@ -7,10 +7,14 @@
 namespace Forge {
 #define FR_BIND_EVENT_FN(x) std::bind(&Application::x,this,std::placeholders::_1)
 	Application* Application::s_Instance = nullptr;
-	Application::Application(const FString& AppName)
+	Application::Application(const ApplicationSpecification& specification)
 	{
 		s_Instance = this;
-		m_Window = Window::Create(WindowProps(AppName));//explicit contructor?
+		// Set working directory here
+		if (!m_Specification.WorkingDirectory.empty())
+			std::filesystem::current_path(m_Specification.WorkingDirectory);
+
+		m_Window = Window::Create(WindowProps(m_Specification.Name));//explicit contructor?
 		m_Window->SetEventCallback(FR_BIND_EVENT_FN(OnEvent));
 		m_Window->SetVSync(true);
 	//	m_Window->EnableDepthTest();

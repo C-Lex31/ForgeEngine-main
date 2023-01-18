@@ -11,21 +11,26 @@ namespace Forge {
 	class ForgeEditor :public Application
 	{
 	public:
-		ForgeEditor()
-			:Application("Anvil Editor")
+		ForgeEditor(const ApplicationSpecification& spec)
+			:Application( spec)
 		{
 			//PushLayer(new Engine_Layer());
 			PushLayer(new Anvil());
 		}
-		~ForgeEditor()
-		{
-
-		}
+		
 
 	};
 
-	Application* CreateApplication()
+	//Application* CreateApplication()
+	//{
+	//	return new ForgeEditor();
+	//}
+	Application* CreateApplication(ApplicationCommandLineArgs args)
 	{
-		return new ForgeEditor();
+		ApplicationSpecification spec;
+		spec.Name = "Anvil";
+		spec.CommandLineArgs = args;
+
+		return new ForgeEditor(spec);
 	}
 }

@@ -1,0 +1,47 @@
+SceneRoot: Untitled
+Entities:
+  - Entity: 728746287
+    TagComponent:
+      Tag: camera
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    CameraComponent:
+      Camera:
+        ProjectionType: 1
+        PerspectiveFOV: 0.785398185
+        PerspectiveNear: 0.00999999978
+        PerspectiveFar: 1000
+        OrthographicSize: 10
+        OrthographicNear: -1
+        OrthographicFar: 1
+      Primary: true
+      FixedAspectRatio: false
+  - Entity: 728746287
+    TagComponent:
+      Tag: lkjh7765
+    TransformComponent:
+      Translation: [0, 0, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0, 0.9857651, 0.217499629, 1]
+  - Entity: 728746287
+    TagComponent:
+      Tag: poiu
+    TransformComponent:
+      Translation: [0, 2.0999999, 0]
+      Rotation: [0, 0, 0]
+      Scale: [1, 1, 1]
+    SpriteRendererComponent:
+      Color: [0.989323854, 0.929471552, 0, 1]
+  - Entity: 728746287
+    TagComponent:
+      Tag: lkju
+    TransformComponent:
+      Translation: [-2.0999999, -2.4000001, 0]
+      Rotation: [0, 0, -0.277507335]
+      Scale: [8.19999981, 1, 1]
+    SpriteRendererComponent:
+      Color: [1, 0, 0, 1]
